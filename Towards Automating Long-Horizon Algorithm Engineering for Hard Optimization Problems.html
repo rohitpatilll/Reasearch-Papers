@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Towards Automating Long-Horizon Algorithm Engineering for Hard Optimization Problems</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W770C6CJ1J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W770C6CJ1J');
+</script>
+<!-- Google Analytics -->
+
+<!-- FB Card data -->
+<meta property="og:title" content="Sakana AI" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="Towards Automating Long-Horizon Algorithm Engineering for Hard Optimization Problems" />
+<meta property="og:image" content="https://sakana.ai/assets/home/sakana_rect.png" />
+<meta property="og:url" content="https://sakana.ai/" />
+  <!-- Twitter Card data -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SakanaAILabs">
+<meta name="twitter:title" content="Sakana AI">
+<meta name="twitter:description" content="Towards Automating Long-Horizon Algorithm Engineering for Hard Optimization Problems">
+<meta name="twitter:image" content="https://sakana.ai/assets/home/sakana_rect.png">
+<!-- End cards-->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Sakana AI">
+<meta name="generator" content="Jekyll v4.2.2">
+<link rel="canonical" href="/ale-bench/">
+
+<link rel="stylesheet" href="/assets/css/index.css">
+
+<link rel="alternate" href="/feed.xml" type="application/atom+xml" title="Blog">
+<!-- blazy load as you go image loader -->
+<script src="/js/blazy.js"></script>
+
+
+
+
+
+
+
+<header>
+  <a href="/" class="title"><img src="/assets/home/sakana_ai_text.svg" width="40%"/></a>
+  <!--<a href="/" class="title">Blog</a>-->
+  <!--<nav><a href="" ></a></nav>
+-->
+</header>
+
+<article>
+  <header>
+  <h1><a href="/ale-bench/">Towards Automating Long-Horizon Algorithm Engineering for Hard Optimization Problems</a></h1><time datetime="2025-06-17T00:00:00+09:00">June 17, 2025</time>
+</header>
+
+  <!--<img src="/assets/ale-bench/ale-overview-border.png" width="100%"/><br/>-->
+<p><img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/ale-overview-border.png" style="width: 100%;" /><br />
+<small><i>We introduce ALE-Bench, a coding benchmark inspired by hard optimization problems whose true optima are computationally out of reach (e.g., NP-hard). This benchmark enabled the development of our new coding agent, ALE-Agent, designed to tackle hard optimization problems. In May 2025, ALE-Agent achieved 21st out of 1,000 human participants in a live AtCoder Heuristic Competition (AHC), marking a turning point for AI discovery of solutions to hard optimization problems with important real world applications.</i></small></p>
+
+<!--more-->
+<p><br /></p>
+
+<h2 id="summary">Summary</h2>
+
+<p>To what extent can AI automate the discovery of algorithms for <strong>hard optimization problems</strong>? This question represents AI’s next grand challenge for two reasons: (1) whether AI can optimize real-world industries, such as logistics and factory planning, power-grid balancing, and (2) whether AI can perform the long-horizon, creative reasoning needed to continuously <em>improve</em> answers for hard problems with no perfect solution, through trial and error.</p>
+
+<p>To answer this question, Sakana AI collaborated with AtCoder, and we developed the <strong><a href="https://arxiv.org/abs/2506.09050">ALE-Bench</a></strong> (<strong>AL</strong>gorithm <strong>E</strong>ngineering <strong>Bench</strong>mark), the world’s first benchmark built on past problems from AtCoder Heuristic Contests, one of the largest, and most prestigious competitions in this field.</p>
+
+<p>The tasks in this benchmark are <strong>hard optimization problems</strong> whose true optima are computationally out of reach (e.g., because the underlying problems are <strong>NP-hard</strong>). Historically, participants spent weeks iteratively refining their programs to push their scores higher.</p>
+
+<p>Unlike most competitive programming benchmarks, which are based on short-duration, pass/fail coding questions with exact-solutions (inspired by Olympiad programming contests), ALE-Bench encourages iterative solution refinement over long time horizons, which are key to advancing solutions to hard optimization, NP-hard problems.</p>
+
+<center>
+<video class="b-lazy" autoplay="" muted="" playsinline="" loop="" style="display: block; margin: auto; width: 100%;"><source src="/assets/ale-bench/ale-animation.mp4" /></video>
+<small><i>Overview of ALE-Bench and ALE-Agent</i></small>
+</center>
+
+<p>This benchmark enabled the development of our <strong><a href="https://arxiv.org/abs/2506.09050">ALE-Agent</a></strong>, a specialized agent for this domain, to demonstrate the potential of AI-driven solutions to hard optimization problems. We deployed ALE-Agent in the wild, participating in a live coding contest, competing with top human contestants around the world in real-time!</p>
+
+<p>In a real AtCoder contest on May 18th, 2025 (participated with permission of AtCoder), our ALE-Agent achieved an impressive <strong>21st place</strong> finish among over <strong>1,000 human participants</strong>. This marks a turning point for AI discovery of solutions that push the frontiers of hard optimization problems with important real world applications.</p>
+
+<center>
+<img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/leaderboard-border.png" style="width: 100%;" /><br />
+</center>
+<p><small><i><b>Leaderboard from AtCoder Heuristic Contest #47 (AHC047).</b> The 21st place entry, “fishylene,” is Sakana AI’s agent, ALE-Agent. It competed in real-time under the same rules as over 1,000 human contestants, with AtCoder’s permission.</i></small></p>
+
+<p>In this blog, and in our <a href="https://arxiv.org/abs/2506.09050">paper</a>, we analyze ALE-Agent’s achievement on the AtCoder contest including some of the algorithmic findings it made. We will discuss our learnings about its performance and also highlight the current limitations of the ALE-Agent, and present challenges ahead for future work.</p>
+
+<ul>
+  <li><strong>Our Technical Report,</strong> ALE-Bench: A Benchmark for Long-Horizon Objective-Driven Algorithm Engineering (<a href="https://arxiv.org/abs/2506.09050">https://arxiv.org/abs/2506.09050</a>)</li>
+  <li><strong>ALE-Bench Dataset:</strong> <a href="https://huggingface.co/datasets/SakanaAI/ALE-Bench">https://huggingface.co/datasets/SakanaAI/ALE-Bench</a></li>
+  <li><strong>ALE-Bench Code:</strong> <a href="https://github.com/SakanaAI/ALE-Bench">https://github.com/SakanaAI/ALE-Bench</a></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Combinatorial optimization problems play a significant role at the core of many of society’s essential systems, such as logistics optimization, factory planning, or power grid stability. This is a field of mathematics and computer science focused on finding a high-quality solution from a set of possibilities under given constraints. Since the properties of these problems and the most effective solution methods differ for each specific setting, human experts must dedicate considerable time and effort to build unique algorithms through a process of trial and error. This begs the question: <em>To what extent can AI automate the discovery of these algorithms?</em> If AI could solve such problems, it would have a tremendous impact, unlocking new levels of efficiency across numerous industries.</p>
+
+<p>This connects to a grand challenge in the AI field: how to measure the more general reasoning capabilities of AI. Conventionally, we have used success rates on coding tasks with strictly correct or incorrect answers from platforms like Codeforces. Yet, the performance of modern AI systems is advancing so quickly on these benchmarks that it is already on par with top human competitors and nearing saturation. Existing benchmarks often fall short of adequately measuring capabilities such as creativity, persistent thought processes, and the accumulation of knowledge gained through trial and error. These very aspects are anticipated to be pivotal for the future evolution of AI. <em>Is it feasible to objectively assess these more advanced reasoning abilities?</em></p>
+
+<p>These questions motivated us to introduce <strong>ALE-Bench</strong> (<strong>AL</strong>gorithm <strong>E</strong>ngineering <strong>Bench</strong>mark) and an AI agent, <strong>ALE-Agent</strong>. Developed in partnership with AtCoder Inc., ALE-Bench allows AI systems to engage with a rich history of challenges from one of the world’s most prestigious programming competitions in this field. ALE-Agent, a specialized agent designed by Sakana AI for this domain, not only demonstrated outstanding performance on the benchmark but also competed in a live AtCoder contest. There, it achieved an impressive 21st-place finish among more than 1,000 human participants. Through our research with ALE-Bench and ALE-Agent, we have gained insights into the current capabilities and limitations of AI, illuminating the path forward for future research.</p>
+
+<p><br /></p>
+
+<h2 id="ale-bench-a-coding-benchmark-for-next-generation-long-horizon-and-creative-algorithm-engineering">ALE-Bench: A Coding Benchmark for Next-Generation Long-horizon and Creative Algorithm Engineering</h2>
+
+<p>Designing effective benchmarks for AI and analyzing/interpreting the results requires high-quality data, well-posed problems, and collaboration with domain experts. At Sakana AI, we have previously developed benchmarks like <a href="/sudoku-bench/">Sudoku-Bench</a> to measure creative reasoning, and <a href="/edinet-bench/">EDINET-Bench</a>, a Japanese financial benchmark focused on real-world applications. Now, in partnership with AtCoder Inc., a global leader in competitive programming, we have created <strong>ALE-Bench (ALgorithm Engineering Benchmark)</strong> to address the challenge of algorithm engineering for optimization problems.</p>
+
+<p>ALE-Bench is created based on the past AtCoder Heuristic Contests (AHC) hosted by AtCoder Inc. The AHC primarily features optimization problems directly linked to real-world industrial challenges, such as logistics optimization and factory production planning. These are high-quality, difficult problems that can take from several hours to several weeks to solve. The contests are fierce, attracting over 1,000 participants at times, including experts in algorithms to solve combinatorial optimization problems and professionals working on industrial applications.</p>
+
+<p>Below is an example of a problem from a past contest: “From 1,000 delivery orders, select 50 and determine their delivery route to minimize the total travel distance.” This is a variation of the <em>Traveling Salesperson Problem</em>, a classic combinatorial optimization problem. It is well known that for such problems, exhaustively checking every possible combination (which amounts to roughly 10^200 in this case) is computationally infeasible. Instead, the challenge lies in designing clever algorithms, like <em>simulated annealing</em>, to efficiently discover better solutions.</p>
+
+<center>
+<img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/example-problem.gif" style="width: 70%;" /><br />
+</center>
+<p><small><i><b>An example problem from a past AtCoder Heuristic Contest.</b> “Food Delivery” from AHC006 (Nov 2021), a problem to determine the optimal selection and route for 50 out of 1000 orders to minimize travel distance. (Rendered with tools provided by AtCoder)</i></small></p>
+
+<p>ALE-Bench consists of 40 diverse optimization problems from past AHCs (Figure below, left). In this benchmark, we provide the problem statements, visualization tools, a code execution environment, and software for calculating rankings (Figure below, right). This setup allows an AI system to simulate the experience of a human participant, enabling performance comparisons under fair conditions between human and other AI systems. For more details, please refer to <a href="https://arxiv.org/abs/2506.09050">our paper</a> and <a href="https://github.com/SakanaAI/ALE-Bench">GitHub</a>.</p>
+
+<p><img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/ale-overview-border.png" style="width: 100%;" /><br />
+<small><i><b>Overview of ALE-Bench.</b><br />
+<b>Left:</b> ALE-Bench consists of challenging AtCoder Heuristic Contest tasks posted in past competitions, which consists of NP-hard optimization problems such as routing and scheduling with no known optimum, and ranks submitted programs by score.<br />
+<b>Right:</b> ALE-Bench covers evaluation from bare LLMs to scaffolded agents. An agent receives a task and submits code. It can optionally invoke test runs and visualization utilities during this process to iteratively refine its solution just like a human participant would.
+</i></small></p>
+
+<p>While attempts to automate solving combinatorial optimization problems with AI have been limited, the potential for real-world application makes this a worthwhile area of research. Unlike most existing benchmarks that focus on pass/fail outcomes, ALE-Bench tasks require long-horizon reasoning, creativity, and continuous improvement in the pursuit of an unknown optimal solution. This open-ended nature of ALE-Bench makes it a valuable tool not only for optimization but also for advancing the broader field of AI.</p>
+
+<p><br /></p>
+
+<h2 id="ale-agent-a-specialized-ai-agent-for-algorithm-engineering">ALE-Agent: A Specialized AI Agent for Algorithm Engineering</h2>
+
+<p>Along with the benchmark, Sakana AI developed ALE-Agent, an AI agent specializing in algorithm engineering. It is built upon a state-of-the-art AI (Gemini 2.5 Pro) and combines two key approaches: 1) providing domain knowledge, such as frequently used algorithms and techniques, through prompts, and 2) employing a form of inference-time scaling that generates multiple diverse answers to improve performance. The technical details can be found in <a href="https://arxiv.org/abs/2506.09050">our paper</a>.</p>
+
+<p>With permission from AtCoder Inc., we had our AI agent participate in two real-time contests (AHC046 and AHC047), competing under the same rules as over 1,000 human participants. The agent placed <a href="https://atcoder.jp/contests/ahc046/standings?lang=en">154th</a> (top 16%) in AHC046 and an outstanding <a href="https://atcoder.jp/contests/ahc047/standings?lang=en">21st</a> (top 2%) in AHC047.</p>
+
+<center>
+<img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/evaluation-results.png" style="width: 70%;" /><br />
+</center>
+<p><small><i><b>Evaluation results on ALE-Bench.</b><br />The performance of ALE-Agent showed higher performance compared to the AI models using a standard refinement method.</i></small></p>
+
+<p>Furthermore, we conducted evaluations on a broader range of combinatorial optimization problems using ALE-Bench. In addition to ALE-Agent, we assessed various state-of-the-art AI models under a setting where they continuously refined their solutions using self-refinement within four hours (see the graph above). While the AI models using the standard method performed at a level roughly equivalent to the top 50% of human participants, ALE-Agent achieved performance within the top 6.8%. This demonstrates a significant enhancement in the capabilities of standalone AI models. For full experimental settings and results, please refer to <a href="https://arxiv.org/abs/2506.09050">the paper</a>.</p>
+
+<p><br /></p>
+
+<h2 id="analysis-of-ale-agent-and-insights">Analysis of ALE-Agent and Insights</h2>
+
+<p>The ALE-Agent is trained to be competitive at identifying algorithmic improvements to hard optimization problems. When we observe the ALE-Agent’s iterative process at improving its solutions, we saw that it often boosted its scores by applying domain knowledge, such as speeding up search algorithms and fine-tuning hyperparameters, just as competitive human experts in this domain would.</p>
+
+<p>In AHC047, the live competition in which the ALE-Agent achieved scores in the top 2% of all participants, we can see examples of such iterative innovations. Here, in the example shown below, the ALE-Agent incorporated the Poisson distribution to approximate and accelerate score calculation, and devising creative neighbor-search patterns for simulated annealing, which was an essential strategy to getting a higher score in AHC047.</p>
+
+<center>
+<img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/example-solution.png" style="width: 100%;" /><br />
+</center>
+<p><small><i><b>ALE-Agent devised a method for speeding up score calculation using Poisson approximation.</b> This was an essential strategy for getting a higher score in AHC047. The actual submission code is <a href="https://atcoder.jp/contests/ahc047/submissions/65959793">here (lines 254-276)</a>.</i></small></p>
+
+<center>
+<img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/assets/ale-bench/example-solution-2.png" style="width: 100%;" /><br />
+</center>
+<p><small><i><b>ALE-Agent implemented a growth of neighborhood search strategy for simulated annealing.</b> This figure presents the overviews of the <a href="https://atcoder.jp/contests/ahc047/submissions/65951220">initial (lines 304-342)</a> and <a href="https://atcoder.jp/contests/ahc047/submissions/65959793">final (lines 492-771)</a> solutions. The score was improved by incorporating a more diverse and efficient set of moves, allowing for a better exploration of the solution space, which ultimately bumped up its performance from 82nd to 21st place out of 1,000 participants.</i></small></p>
+
+<p>How did ALE-Agent rank in the top 2% at the AHC047? One key reason is the difference in how humans and AI solve problems. In a four-hour competition, a person might refine their code a dozen times at most. In contrast, current AI can make about 100 revisions. Furthermore, our ALE-Agent generates hundreds or even thousands of potential solutions. This ability to rapidly and parallelly create solutions gives AI a significant advantage, particularly in shorter contests. We also discovered that current AI is very good at using “simulated annealing,” a common algorithm used in AHCs (Example: the agent’s <a href="https://atcoder.jp/contests/ahc039/submissions/65734651?lang=en">best solution for AHC039</a> which would have placed 5th in the actual competition).</p>
+
+<p><br /></p>
+
+<h2 id="limitations-challenges-and-future-work">Limitations, Challenges and Future Work</h2>
+
+<p>Despite its successes, ALE-Agent has limitations. The agent also had its struggles. We noticed that ALE-Agent sometimes failed to fix bugs, repeatedly exceeded the time limit because it couldn’t properly analyze the complexity of its own code, and persisted in improving parts of the code that contributed little to score improvement.</p>
+
+<p>While the ALE-Agent performed well in four-hour contests and on problems where simulated annealing was a good fit, it struggled with two-week contests and problems that demanded different types of algorithms rather than simulated annealing. It also showed a tendency to struggle with designing algorithms based on experimental analysis that requires trial and error, relying on observing the program’s behavior.</p>
+
+<p>For future improvements, one direction is to develop an agent capable of making more reliable improvements, for example, by incorporating more of the techniques and tools used by human experts and by enhancing feedback to enable detailed analysis of execution results. Another path is to advance the technology of the agent itself, for instance by combining these ideas with an approach where the agent improves itself. Through such refinements, the ultimate goal is to create an AI with algorithm engineering skills that can match or even surpass the best human algorithm engineers.</p>
+
+<p>We are grateful that AtCoder collaborated with us on the creation of ALE-Bench, and permitted ALE-Agent’s participation in their contests. Our objective here was to understand the current state of AI’s capabilities in algorithm engineering. AtCoder Heuristic Contests should remain an environment where humans can enjoy competing with each other and learning algorithmic and programming skills. Based on the results of this study, AtCoder, in cooperation with Sakana AI, has established <a href="https://info.atcoder.jp/entry/ahc-llm-rules-en">new rules</a> for the use of AI in future contests. We believe this represents an important direction for the coexistence and collaboration of AI and humans.</p>
+
+<p><br /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this work, we developed a new benchmark, ALE-Bench, to measure the algorithm engineering capabilities of AI for hard, combinatorial optimization problems. We also developed a domain-specialized AI agent, ALE-Agent, which achieved remarkable results on the benchmark and in a real-time contest. If AI-driven automation of algorithm discovery becomes a reality, it will trigger a paradigm shift, bringing efficiency gains across numerous industries. Building on the insights from this study, Sakana AI will continue to tackle the challenge of developing AI with even greater algorithm engineering capabilities.</p>
+
+<p><em>This research was conducted in collaboration with AtCoder Inc. We are deeply grateful for their outstanding expertise and contributions in optimization and algorithms, which were invaluable in providing data, analyzing results, and enabling our AI agent’s participation in their contests.</em></p>
+
+<p>For more details, please see our paper:</p>
+
+<ul>
+  <li><strong>ALE-Bench: A Benchmark for Long-Horizon Objective-Driven Algorithm Engineering</strong> (<a href="https://arxiv.org/abs/2506.09050">https://arxiv.org/abs/2506.09050</a>)
+  Authors: Yuki Imajuku¹, Kohki Horie¹,², Yoichi Iwata³, Kensho Aoki³, Naohiro Takahashi³, Takuya Akiba¹ (1: Sakana AI, 2: The University of Tokyo, 3: AtCoder Inc.)</li>
+  <li>ALE-Bench Dataset: <a href="https://huggingface.co/datasets/SakanaAI/ALE-Bench">https://huggingface.co/datasets/SakanaAI/ALE-Bench</a></li>
+  <li>ALE-Bench Code: <a href="https://github.com/SakanaAI/ALE-Bench">https://github.com/SakanaAI/ALE-Bench</a></li>
+  <li>ALE-Bench Leaderboard: <a href="https://sakanaai.github.io/ALE-Bench-Leaderboard/">https://sakanaai.github.io/ALE-Bench-Leaderboard/</a></li>
+</ul>
+
+<p><br /></p>
+
+<p>
+<br />
+</p>
+<center>
+<a href="/careers/"><img src="/assets/ale-bench/fish-1-high-res.jpeg" width="80%" /></a><br />
+</center>
+
+<p><br /></p>
+
+<h2 id="sakanaai">Sakana AI</h2>
+
+<p>Interested in joining us? Please see our <a href="/careers/">career opportunities</a> for more information.</p>
+
+<p>
+<br />
+</p>
+
+  
+</article>
+
+
+
+<footer>
+  <div>&copy; <a href="/">Sakana AI 株式会社</a></div>
+  <nav><a href="https://www.linkedin.com/company/sakana-ai/" ><svg aria-label="LinkedIn" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#linkedin"></use></svg></a><a href="https://twitter.com/SakanaAILabs" ><svg aria-label="Twitter" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#twitter"></use></svg></a></nav>
+
+</footer>
+
+
+<script src="/js/blazy_init.js"></script>
+</html>
